@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import tempfile
 import threading
 import time
 import traceback
@@ -73,10 +74,13 @@ class _IndoljConstants:
 C = _IndoljConstants()
 
 app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = "uploads"
+app.config["UPLOAD_FOLDER"] = os.path.join(tempfile.gettempdir(), "uploads")
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16MB
 
-os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+try:
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+except OSError:
+    pass
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
