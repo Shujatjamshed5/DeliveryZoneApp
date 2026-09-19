@@ -1,0 +1,38 @@
+# ==============================================================================
+# DeliveryZoneApp — Python Dependencies
+# ==============================================================================
+# Install: pip install -r requirements.txt
+#
+# Tested on Python 3.11+ / Python 3.12+
+# Last updated: August 2026
+
+# ── Web Framework ─────────────────────────────────────────────────────────────
+Flask>=3.0.0,<4.0.0
+Werkzeug>=3.0.0,<4.0.0
+
+# ── Data Processing ───────────────────────────────────────────────────────────
+pandas>=2.2.0,<3.0.0
+openpyxl>=3.1.0,<4.0.0        # Excel (.xlsx) support for pandas
+xlrd>=2.0.1,<3.0.0            # Legacy Excel (.xls) support
+
+# ── HTTP & Auth ───────────────────────────────────────────────────────────────
+requests>=2.31.0,<3.0.0
+urllib3>=2.0.0,<3.0.0
+
+# ── AI / LLM (OpenAI-compatible client for Google Gemini) ────────────────────
+openai>=1.40.0,<2.0.0
+
+# ── Browser Automation ────────────────────────────────────────────────────────
+selenium>=4.20.0,<5.0.0
+webdriver-manager>=4.0.1,<5.0.0
+
+# ── OCR (Optional — for image-based file imports) ────────────────────────────
+# Requires Tesseract binary installed separately:
+#   Windows: https://github.com/UB-Mannheim/tesseract/wiki
+#   Linux:   sudo apt install tesseract-ocr
+#   macOS:   brew install tesseract
+pytesseract>=0.3.10,<1.0.0
+Pillow>=10.0.0,<12.0.0
+
+# ── Environment & Config ──────────────────────────────────────────────────────
+python-dotenv>=1.0.0,<2.0.0

@@ -1,0 +1,69 @@
+# ==============================================================================
+# DeliveryZoneApp — .gitignore
+# ==============================================================================
+
+# ── Environment & Secrets ──────────────────────────────────────────────────────
+.env
+*.env
+.env.local
+.env.production
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# ── Virtual Environments ──────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+venv.bak/
+
+# ── Uploads (Temp Files) ──────────────────────────────────────────────────────
+uploads/*.csv
+uploads/*.xlsx
+uploads/*.xls
+uploads/*.jpg
+uploads/*.jpeg
+uploads/*.png
+uploads/*.pdf
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+logs/
+*.log
+
+# ── Drivers (OS-specific binaries) ────────────────────────────────────────────
+chromedriver-win64/
+chromedriver-linux64/
+chromedriver-mac64/
+chromedriver/
+
+# ── IDEs & Editors ────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+*.DS_Store
+*.swp
+*.swo
+*~
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+docker-compose.override.yml

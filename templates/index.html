@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Areas Importer — Delivery Zone Automation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- ───────── Backdrop ───────── -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <div class="app-container">
+
+        <!-- ───────── Top status strip ───────── -->
+        <div class="topbar">
+            <div class="topbar__brand">
+                <div class="topbar__mark">AI</div>
+                <div class="topbar__name">Areas Importer <span>/ Indolj Portal</span></div>
+            </div>
+            <div class="topbar__status">
+                <span class="status-dot status-dot--pulse"></span>
+                Automation Ready
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════
+             PHASE 1 — INPUT FORM
+             ══════════════════════════════════════════ -->
+        <section id="phase-form" class="phase phase--active">
+
+            <header class="hero">
+                <span class="hero__eyebrow"><i class="ph-bold ph-lightning"></i> AI-Powered Automation </span>
+                <h1 class="hero__title">Import 3,000+ Delivery Areas in Minutes<br><span class="dim">without touching the portal.</span></h1>
+                <p class="hero__subtitle">
+                    Upload a CSV, Excel, or image file — Gemini cleans and groups your areas,
+                    Selenium handles the portal work.
+                </p>
+            </header>
+
+            <div class="layout">
+                <form id="importForm" class="layout__main" autocomplete="off">
+
+                    <!-- Portal Credentials -->
+                    <div class="card">
+                        <div class="card__header">
+                            <i class="ph-duotone ph-shield-check"></i>
+                            <h2>Merchant Credentials</h2>
+                        </div>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label for="username"><i class="ph ph-user"></i> Username</label>
+                                <input type="text" id="username" name="username" placeholder="e.g. pizzahut" required>
+                            </div>
+                            <div class="field">
+                                <label for="password"><i class="ph ph-lock-simple"></i> Password</label>
+                                <input type="password" id="password" name="password" placeholder="••••••••" required>
+                            </div>
+                            <div class="field">
+                                <label for="merchant_id"><i class="ph ph-storefront"></i> Merchant ID</label>
+                                <input type="text" id="merchant_id" name="merchant_id" placeholder="e.g. 200274" required>
+                            </div>
+                            <div class="field">
+                                <label for="branch_id"><i class="ph ph-map-pin"></i> Branch ID</label>
+                                <input type="text" id="branch_id" name="branch_id" placeholder="e.g. 40594" required>
+                            </div>
+                            <div class="field">
+                                <label for="city_name"><i class="ph ph-buildings"></i> Branch City</label>
+                                <select id="city_name" name="city_name" required>
+                                    <option value="" disabled selected>Select city...</option>
+                                    <option value="Karachi">Karachi</option>
+                                    <option value="Lahore">Lahore</option>
+                                    <option value="islamabad">Islamabad</option>
+                                    <option value="Faisalabad">Faisalabad</option>
+                                    <option value="Gujranwala">Gujranwala</option>
+                                    <option value="Quetta">Quetta</option>
+                                    <option value="Peshawar">Peshawar</option>
+                                    <option value="Mardan">Mardan</option>
+                                    <option value="Hyderabad">Hyderabad</option>
+                                    <option value="Larkana">Larkana</option>
+                                    <option value="Nawabshah">Nawabshah</option>
+                                    <option value="Mirpurkhas">Mirpurkhas</option>
+                                    <option value="Jamshoro">Jamshoro</option>
+                                    <option value="Sambrial">Sambrial</option>
+                                    <option value="Wazirabad">Wazirabad</option>
+                                    <option value="Rawalpindi">Rawalpindi</option>
+                                    <option value="Bahawalpur">Bahawalpur</option>
+                                    <option value="Sahiwal">Sahiwal</option>
+                                    <option value="Jehlum">Jehlum</option>
+                                    <option value="Khanewal">Khanewal</option>
+                                    <option value="Multan">Multan</option>
+                                    <option value="Sialkot">Sialkot</option>
+                                    <option value="Murree">Murree</option>
+                                    <option value="Nationwide">Nationwide</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- File Upload -->
+                    <div class="card">
+                        <div class="card__header">
+                            <i class="ph-duotone ph-cloud-arrow-up"></i>
+                            <h2>Upload Data</h2>
+                        </div>
+
+                        <div class="dropzone" id="dropzone">
+                            <input type="file" id="fileInput" name="file" accept=".csv,.xlsx,.xls,.jpg,.jpeg,.png" hidden>
+                            <div class="dropzone__idle" id="dropzoneIdle">
+                                <div class="dropzone__icon-wrap">
+                                    <i class="ph-duotone ph-file-arrow-up"></i>
+                                </div>
+                                <p class="dropzone__cta">Drag &amp; drop your file here</p>
+                                <p class="dropzone__hint">or <span class="dropzone__browse">browse files</span></p>
+                                <div class="dropzone__formats">
+                                    <span class="badge badge--csv">CSV</span>
+                                    <span class="badge badge--xls">Excel</span>
+                                    <span class="badge badge--img">JPG / PNG</span>
+                                </div>
+                            </div>
+                            <div class="dropzone__filled hidden" id="dropzoneFilled">
+                                <i class="ph-duotone ph-file-text"></i>
+                                <span id="fileName" class="dropzone__filename"></span>
+                                <button type="button" class="dropzone__remove" id="removeFile" title="Remove file">
+                                    <i class="ph-bold ph-x"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="btn-submit" id="btnSubmit">
+                        <span class="btn-submit__label">
+                            <i class="ph-bold ph-rocket-launch"></i>
+                            Start Processing
+                        </span>
+                        <span class="btn-submit__loader hidden">
+                            <i class="ph-bold ph-circle-notch spinner"></i>
+                            Uploading…
+                        </span>
+                    </button>
+                </form>
+
+                <!-- Sidebar: pipeline preview -->
+                <aside class="layout__side">
+                    <div class="card">
+                        <div class="card__header">
+                            <i class="ph-duotone ph-flow-arrow"></i>
+                            <h2>Import Process</h2>
+                        </div>
+                        <ol class="pipeline-preview__list">
+                            <li class="pp-item">
+                                <div class="pp-item__rail">
+                                    <div class="pp-item__dot">1</div>
+                                    <div class="pp-item__line"></div>
+                                </div>
+                                <div>
+                                    <p class="pp-item__title">Read &amp; parse file</p>
+                                    <p class="pp-item__desc">Extract rows from CSV, Excel, or image.</p>
+                                </div>
+                            </li>
+                            <li class="pp-item">
+                                <div class="pp-item__rail">
+                                    <div class="pp-item__dot">2</div>
+                                    <div class="pp-item__line"></div>
+                                </div>
+                                <div>
+                                    <p class="pp-item__title">AI analysis &amp; cleaning</p>
+                                    <p class="pp-item__desc">Gemini groups areas into delivery zones.</p>
+                                </div>
+                            </li>
+                            <li class="pp-item">
+                                <div class="pp-item__rail">
+                                    <div class="pp-item__dot">3</div>
+                                    <div class="pp-item__line"></div>
+                                </div>
+                                <div>
+                                    <p class="pp-item__title">Match to database</p>
+                                    <p class="pp-item__desc">Areas fuzzy-matched within your city.</p>
+                                </div>
+                            </li>
+                            <li class="pp-item">
+                                <div class="pp-item__rail">
+                                    <div class="pp-item__dot">4</div>
+                                    <div class="pp-item__line"></div>
+                                </div>
+                                <div>
+                                    <p class="pp-item__title">Authenticate to portal</p>
+                                    <p class="pp-item__desc">Secure Selenium session to Indolj.</p>
+                                </div>
+                            </li>
+                            <li class="pp-item">
+                                <div class="pp-item__rail">
+                                    <div class="pp-item__dot">5</div>
+                                </div>
+                                <div>
+                                    <p class="pp-item__title">Upload to portal</p>
+                                    <p class="pp-item__desc">Zones created, updated, or re-mapped.</p>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="card tech-badges">
+                        <div class="tech-badge"><i class="ph-bold ph-lightning"></i> <span><strong>Gemini AI</strong> — area parsing &amp; cleaning</span></div>
+                        <div class="tech-badge"><i class="ph-bold ph-globe-simple"></i> <span><strong>Selenium</strong> — portal automation</span></div>
+                        <div class="tech-badge"><i class="ph-bold ph-shield-check"></i> <span><strong>Geofence-aware</strong> — verified areas only</span></div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════
+             PHASE 2 — STEP PROGRESS
+             ══════════════════════════════════════════ -->
+        <section id="phase-progress" class="phase">
+
+            <header class="progress-header">
+                <h1><i class="ph-duotone ph-gear-fine spinner"></i> Processing Your File</h1>
+                <p class="progress-subtitle" id="progressFile"></p>
+            </header>
+
+            <div class="overall-bar"><div class="overall-bar__fill" id="overallBarFill"></div></div>
+
+            <div class="progress-layout">
+                <div class="stepper" id="stepper">
+
+                    <!-- Step 1 -->
+                    <div class="step" data-step="1">
+                        <div class="step__rail">
+                            <div class="step__circle">
+                                <span class="step__num">1</span>
+                                <i class="ph-bold ph-check step__check"></i>
+                                <i class="ph-bold ph-x step__cross"></i>
+                            </div>
+                            <div class="step__line"></div>
+                        </div>
+                        <div class="step__body">
+                            <div class="step__icon">📄</div>
+                            <div class="step__content">
+                                <h3 class="step__title">Reading &amp; Parsing File</h3>
+                                <p class="step__detail">Waiting…</p>
+                                <div class="step__progress-bar"><div class="step__progress-fill"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="step" data-step="2">
+                        <div class="step__rail">
+                            <div class="step__circle">
+                                <span class="step__num">2</span>
+                                <i class="ph-bold ph-check step__check"></i>
+                                <i class="ph-bold ph-x step__cross"></i>
+                            </div>
+                            <div class="step__line"></div>
+                        </div>
+                        <div class="step__body">
+                            <div class="step__icon">🧠</div>
+                            <div class="step__content">
+                                <h3 class="step__title">AI Analysis &amp; Cleaning</h3>
+                                <p class="step__detail">Waiting…</p>
+                                <div class="step__progress-bar"><div class="step__progress-fill"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="step" data-step="3">
+                        <div class="step__rail">
+                            <div class="step__circle">
+                                <span class="step__num">3</span>
+                                <i class="ph-bold ph-check step__check"></i>
+                                <i class="ph-bold ph-x step__cross"></i>
+                            </div>
+                            <div class="step__line"></div>
+                        </div>
+                        <div class="step__body">
+                            <div class="step__icon">🔍</div>
+                            <div class="step__content">
+                                <h3 class="step__title">Matching Areas to Database</h3>
+                                <p class="step__detail">Waiting…</p>
+                                <div class="step__progress-bar"><div class="step__progress-fill"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="step" data-step="4">
+                        <div class="step__rail">
+                            <div class="step__circle">
+                                <span class="step__num">4</span>
+                                <i class="ph-bold ph-check step__check"></i>
+                                <i class="ph-bold ph-x step__cross"></i>
+                            </div>
+                            <div class="step__line"></div>
+                        </div>
+                        <div class="step__body">
+                            <div class="step__icon">🔐</div>
+                            <div class="step__content">
+                                <h3 class="step__title">Authenticating to Portal</h3>
+                                <p class="step__detail">Waiting…</p>
+                                <div class="step__progress-bar"><div class="step__progress-fill"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="step" data-step="5">
+                        <div class="step__rail">
+                            <div class="step__circle">
+                                <span class="step__num">5</span>
+                                <i class="ph-bold ph-check step__check"></i>
+                                <i class="ph-bold ph-x step__cross"></i>
+                            </div>
+                            <!-- No trailing line for last step -->
+                        </div>
+                        <div class="step__body">
+                            <div class="step__icon">☁️</div>
+                            <div class="step__content">
+                                <h3 class="step__title">Uploading to Indolj Portal</h3>
+                                <p class="step__detail">Waiting…</p>
+                                <div class="step__progress-bar"><div class="step__progress-fill"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live activity console -->
+                <div class="console">
+                    <div class="console__header">
+                        <div class="console__title"><i class="ph-bold ph-terminal-window"></i> Live Activity</div>
+                    </div>
+                    <div class="console__list" id="liveConsoleList">
+                        <p class="console__empty" id="liveConsoleEmpty">Waiting for the pipeline to start…</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timer-bar" id="timerBar">
+                <div class="timer-bar__elapsed">
+                    <i class="ph ph-timer"></i>
+                    Elapsed: <strong id="timerElapsed">00:00</strong>
+                </div>
+                <div class="timer-bar__estimate" id="timerEstimate">
+                    ~30 seconds remaining
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════
+             PHASE 3 — RESULTS DASHBOARD
+             ══════════════════════════════════════════ -->
+        <section id="phase-results" class="phase">
+
+            <!-- Success / Error Header -->
+            <div class="result-hero" id="resultHero">
+                <div class="result-hero__icon" id="resultIcon">
+                    <svg class="checkmark-svg" viewBox="0 0 52 52">
+                        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                        <path class="checkmark-path" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>
+                </div>
+                <h1 class="result-hero__title" id="resultTitle">Sync Complete!</h1>
+                <p class="result-hero__sub" id="resultSub">All delivery zones have been processed successfully.</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card stat-card--total">
+                    <i class="ph-duotone ph-list-numbers"></i>
+                    <div class="stat-card__value" id="statTotal">0</div>
+                    <div class="stat-card__label">Total Zones</div>
+                </div>
+                <div class="stat-card stat-card--created">
+                    <i class="ph-duotone ph-plus-circle"></i>
+                    <div class="stat-card__value" id="statCreated">0</div>
+                    <div class="stat-card__label">Zones Created</div>
+                </div>
+                <div class="stat-card stat-card--updated">
+                    <i class="ph-duotone ph-arrows-clockwise"></i>
+                    <div class="stat-card__value" id="statUpdated">0</div>
+                    <div class="stat-card__label">Zones Updated</div>
+                </div>
+                <div class="stat-card stat-card--updated-areas" title="Individual areas newly added into existing zones">
+                    <i class="ph-duotone ph-map-pin-area"></i>
+                    <div class="stat-card__value" id="statUpdatedAreas">0</div>
+                    <div class="stat-card__label">Areas Added</div>
+                </div>
+                <div class="stat-card stat-card--moved" title="Duplicate areas found in the wrong zone and relocated to the correct one">
+                    <i class="ph-duotone ph-swap"></i>
+                    <div class="stat-card__value" id="statMoved">0</div>
+                    <div class="stat-card__label">Duplicates Moved</div>
+                </div>
+                <div class="stat-card stat-card--total-areas" title="Total areas across all zones after merging with existing data">
+                    <i class="ph-duotone ph-stack"></i>
+                    <div class="stat-card__value" id="statTotalAreas">0</div>
+                    <div class="stat-card__label">Subtotal Areas</div>
+                </div>
+                <div class="stat-card stat-card--skipped">
+                    <i class="ph-duotone ph-minus-circle"></i>
+                    <div class="stat-card__value" id="statSkipped">0</div>
+                    <div class="stat-card__label">Skipped</div>
+                </div>
+                <div class="stat-card stat-card--failed">
+                    <i class="ph-duotone ph-warning-octagon"></i>
+                    <div class="stat-card__value" id="statFailed">0</div>
+                    <div class="stat-card__label">Failed</div>
+                </div>
+            </div>
+
+            <!-- Missing Areas Panel -->
+            <div class="missing-panel" id="missingAreasCard" style="display:none;">
+
+                <div class="missing-panel__header" id="missingPanelHeader">
+                    <div class="missing-panel__title">
+                        <div class="missing-panel__icon-ring">
+                            <i class="ph-bold ph-warning-octagon"></i>
+                        </div>
+                        <div>
+                            <h2>Areas Not Found</h2>
+                            <p class="missing-panel__subtitle">These areas couldn't be fully processed — either <strong>missing from <code>area_mapping.json</code></strong> entirely, or matched but <strong>not geofenced</strong> on the portal yet. They also appear in the timeline below.</p>
+                        </div>
+                    </div>
+                    <div class="missing-panel__actions">
+                        <span class="missing-badge" id="missingCountBadge">0 areas</span>
+                        <button class="missing-copy-btn" id="btnCopyMissing" type="button" title="Copy all missing area names">
+                            <i class="ph-bold ph-copy"></i> Copy All
+                        </button>
+                        <button class="missing-panel__toggle" id="toggleMissing" type="button">
+                            <i class="ph ph-caret-down card__chevron"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="missing-alert" id="missingAlertBanner">
+                    <i class="ph-bold ph-arrow-right"></i>
+                    <span>Please add these areas manually — either to <strong>area_mapping.json</strong> (if missing from the database) or with a <strong>green geofence dot</strong> on the portal (if not geofenced) — then re-run the import.</span>
+                </div>
+
+                <div class="missing-panel__body" id="missingAreasBody">
+                    <div id="missingZonesContainer"></div>
+                </div>
+            </div>
+
+            <!-- Logs — Operation Timeline -->
+            <div class="card">
+                <div class="card__header">
+                    <i class="ph-duotone ph-terminal-window"></i>
+                    <h2>Operation Timeline</h2>
+                </div>
+                <div class="logs-container" id="logsContainer">
+                    <div id="logsContent"><p class="logs-empty">No logs available.</p></div>
+                </div>
+            </div>
+
+            <!-- Reset -->
+            <button type="button" class="btn-submit btn-submit--reset" id="btnReset">
+                <i class="ph-bold ph-arrow-counter-clockwise"></i>
+                Sync Another File
+            </button>
+        </section>
+
+        <!-- Error Toast (floating) -->
+        <div class="toast toast--error hidden" id="errorToast">
+            <i class="ph-bold ph-warning-circle"></i>
+            <span id="errorToastMsg">An error occurred</span>
+            <button class="toast__close" id="closeToast"><i class="ph-bold ph-x"></i></button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+    </div>
+  <footer class="app-footer">
+    <div class="app-footer__line"></div>
+
+    <div class="app-footer__credit">
+        <i class="ph-bold ph-code"></i>
+        <span>Designed &amp; Created by <strong>Muhammad Shujat</strong></span>
+    </div>
+
+    <div class="app-footer__copyright">
+        © 2026 AI Areas Importer
+    </div>
+</footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
